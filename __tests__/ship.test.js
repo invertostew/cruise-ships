@@ -20,3 +20,13 @@ describe('Ship constructor', () => {
         expect(ship.startingPort).toEqual(startingPort);
     });
 });
+
+describe('setSail method', () => {
+    test('Ship instance can set sail from the starting port', () => {
+        expect(ship.setSail('Cherbourg')).toEqual('You have set sail for Cherbourg.');
+    });
+    test('The _currentPort property of the Ship instance gets updated', () => {
+        ship.setSail('Cherbourg');
+        expect(ship._currentPort).toEqual('Cherbourg');
+    });
+});
