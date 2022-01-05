@@ -27,11 +27,28 @@ describe('Ship constructor', () => {
 });
 
 describe('setSail method', () => {
-    test('Ship instance can setSail', () => {
-        expect(ship.setSail()).toEqual('You have set sail.');
-    });
     test('The currentPort property of the Ship instance gets updated', () => {
         ship.setSail();
         expect(ship.currentPort).toBe(null);
+    });
+    test('Return a success message', () => {
+        expect(ship.setSail()).toEqual('The ship has set sail.');
+    });
+});
+
+describe('dock method', () => {
+    let cherbourgConfig, cherbourg;
+    beforeEach(() => {
+        cherbourgConfig = {
+            name: 'Cherbourg'
+        };
+        cherbourg = new Port(cherbourgConfig);
+    });
+    test('The currentPort property of the Ship instance gets updated', () => {
+        ship.dock(cherbourg);
+        expect(ship.currentPort).toEqual(cherbourg);
+    });
+    test('Return a success message', () => {
+        expect(ship.dock(cherbourg)).toEqual('The ship has docked at Cherbourg.');
     });
 });
