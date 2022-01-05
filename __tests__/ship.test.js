@@ -2,15 +2,21 @@
 
 const Ship = require('../src/ship.js');
 const Port = require('../src/port.js');
+const Itinerary = require('../src/itinerary.js');
 
-let portConfig, port, shipConfig, ship;
+let itineraryConfig, itinerary, shipConfig, ship;
 beforeEach(() => {
-    portConfig = {
-        name: 'Southampton'
+    itineraryConfig = {
+        ports: [
+            new Port({ name: 'Southampton'}),
+            new Port({ name: 'Cherbourg' }),
+            new Port({ name: 'Cobh' }),
+            new Port({ name: 'New York City' })
+        ]
     };
-    port = new Port(portConfig);
+    itinerary = new Itinerary(itineraryConfig);
     shipConfig = {
-        currentPort: port
+        itinerary: itinerary
     };
     ship = new Ship(shipConfig);
 });
@@ -20,9 +26,15 @@ describe('Ship constructor', () => {
         expect(ship).toBeInstanceOf(Ship);
     });
     test('Ship instance has own currentPort property', () => {
-        const { currentPort } = shipConfig;
-        expect(ship.currentPort).not.toBeUndefined();
-        expect(ship.currentPort).toEqual(currentPort);
+        const { itinerary } = shipConfig;
+        expect(ship.currentPort).toEqual(itinerary.ports[0]);
+    });
+    test('Ship instance has own itinerary property', () => {
+        const { itinerary } = shipConfig;
+        expect(ship.itinerary).toEqual(itinerary);
+    });
+    test('Ship instance has own _alreadyDocked property', () => {
+        expect(ship._alreadyDocked).toEqual([]);
     });
 });
 
@@ -31,24 +43,28 @@ describe('setSail method', () => {
         ship.setSail();
         expect(ship.currentPort).toBe(null);
     });
+    test('The _alreadyDocked property of the Ship instance gets updated', () => {
+        ship.setSail();
+        expect(ship._alreadyDocked).toEqual([{ name: 'Southampton' }]);
+        ship.setSail();
+        expect(ship._alreadyDocked).toEqual([
+            { name: 'Southampton' },
+            { name: 'Cherbourg' }
+        ]);
+    });
     test('Return a success message', () => {
         expect(ship.setSail()).toEqual('The ship has set sail.');
     });
 });
 
 describe('dock method', () => {
-    let cherbourgConfig, cherbourg;
-    beforeEach(() => {
-        cherbourgConfig = {
-            name: 'Cherbourg'
-        };
-        cherbourg = new Port(cherbourgConfig);
-    });
     test('The currentPort property of the Ship instance gets updated', () => {
-        ship.dock(cherbourg);
-        expect(ship.currentPort).toEqual(cherbourg);
+        ship.setSail();
+        ship.dock();
+        expect(ship.currentPort).toEqual({ name: 'Cherbourg' });
     });
     test('Return a success message', () => {
-        expect(ship.dock(cherbourg)).toEqual('The ship has docked at Cherbourg.');
+        ship.setSail();
+        expect(ship.dock()).toEqual('The ship has docked at Cherbourg.');
     });
 });

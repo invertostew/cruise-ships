@@ -2,17 +2,21 @@
 
 class Ship {
     constructor(config) {
-        this.currentPort = config.currentPort;
+        this.itinerary = config.itinerary;
+        this.currentPort = config.itinerary.ports[0];
+        this._alreadyDocked = [];
     }
 
     setSail() {
         this.currentPort = null;
+        const departedPort = this.itinerary.ports.shift();
+        this._alreadyDocked.push(departedPort);
         return 'The ship has set sail.';
     }
 
-    dock(port) {
-        this.currentPort = port;
-        return `The ship has docked at ${port.name}.`;
+    dock() {
+        this.currentPort = this.itinerary.ports[0];
+        return `The ship has docked at ${this.currentPort.name}.`;
     }
 }
 
