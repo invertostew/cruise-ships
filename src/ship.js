@@ -2,13 +2,12 @@
 
 class Ship {
     constructor(config) {
-        this.startingPort = config.startingPort;
-        this._currentPort = config.startingPort;
+        this.currentPort = config.currentPort;
     }
 
-    setSail(port) {
-        this._currentPort = port;
-        return `You have set sail for ${port}.`;
+    setSail() {
+        this.currentPort = null;
+        return `You have set sail.`;
     }
 }
 

@@ -1,32 +1,37 @@
 'use strict';
 
 const Ship = require('../src/ship.js');
+const Port = require('../src/port.js');
 
-let config, ship;
+let portConfig, port, shipConfig, ship;
 beforeEach(() => {
-    config = {
-        startingPort: 'Southampton'
+    portConfig = {
+        name: 'Southampton'
     };
-    ship = new Ship(config);
+    port = new Port(portConfig);
+    shipConfig = {
+        currentPort: port
+    };
+    ship = new Ship(shipConfig);
 });
 
 describe('Ship constructor', () => {
     test('Ship can be instantiated', () => {
         expect(ship).toBeInstanceOf(Ship);
     });
-    test('Ship instance has own startingPort property', () => {
-        const { startingPort } = config;
-        expect(ship.startingPort).not.toBeUndefined();
-        expect(ship.startingPort).toEqual(startingPort);
+    test('Ship instance has own currentPort property', () => {
+        const { currentPort } = shipConfig;
+        expect(ship.currentPort).not.toBeUndefined();
+        expect(ship.currentPort).toEqual(currentPort);
     });
 });
 
 describe('setSail method', () => {
-    test('Ship instance can set sail from the starting port', () => {
-        expect(ship.setSail('Cherbourg')).toEqual('You have set sail for Cherbourg.');
+    test('Ship instance can setSail', () => {
+        expect(ship.setSail()).toEqual('You have set sail.');
     });
-    test('The _currentPort property of the Ship instance gets updated', () => {
-        ship.setSail('Cherbourg');
-        expect(ship._currentPort).toEqual('Cherbourg');
+    test('The currentPort property of the Ship instance gets updated', () => {
+        ship.setSail();
+        expect(ship.currentPort).toBe(null);
     });
 });
