@@ -1,27 +1,27 @@
 'use strict';
 
 const Itinerary = require('../src/itinerary.js');
-const Port = require('../src/port.js');
 
-let config, itinerary;
+let itineraryConfig, itinerary;
 beforeEach(() => {
-    config = {
+    itineraryConfig = {
         ports: [
-            new Port({ name: 'Cherbourg' }),
-            new Port({ name: 'Cobh' }),
-            new Port({ name: 'New York City' })
+            { name: 'Cherbourg' },
+            { name: 'Cobh' },
+            { name: 'New York City' }
         ]
     };
-    itinerary = new Itinerary(config);
+    itinerary = new Itinerary(itineraryConfig);
 });
 
-describe('Itinerary constructor', () => {
-    test('Itinerary can be instantiated', () => {
-        expect(itinerary).toBeInstanceOf(Itinerary);
-    });
-    test('Itinerary instance has own ports property', () => {
-        const { ports } = config;
-        expect(itinerary.ports).not.toBeUndefined();
-        expect(itinerary.ports).toEqual(ports);
+describe('Itinerary', () => {
+    describe('constructor', () => {
+        test('Itinerary can be instantiated', () => {
+            expect(itinerary).toBeInstanceOf(Itinerary);
+        });
+        test('Itinerary instances have own "ports" property', () => {
+            const { ports } = itinerary;
+            expect(itinerary.ports).toEqual(ports);
+        });
     });
 });
