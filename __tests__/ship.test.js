@@ -67,6 +67,7 @@ describe('Ship', () => {
                 }
             };
             const titanic = new Ship(emptyConfig);
+            
             expect(() => titanic.setSail()).toThrowError('The ship has no itinerary.');
         });
         test('State of "_currentPort" should be null', () => {

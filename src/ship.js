@@ -4,7 +4,7 @@ const settings = {
     errors: {
         emptyItinerary: 'The ship has no itinerary.'
     }
-}
+};
 
 class Ship {
     constructor(config) {
