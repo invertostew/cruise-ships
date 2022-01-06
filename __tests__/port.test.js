@@ -2,21 +2,22 @@
 
 const Port = require('../src/port.js');
 
-let config, port;
+let southamptonConfig, southampton;
 beforeEach(() => {
-    config = {
+    southamptonConfig = {
         name: 'Southampton'
     };
-    port = new Port(config);
+    southampton = new Port(southamptonConfig);
 });
 
-describe('Port constructor', () => {
-    test('Port can be instantiated', () => {
-        expect(port).toBeInstanceOf(Port);
-    });
-    test('Port instance has own name property', () => {
-        const { name } = config;
-        expect(port.name).not.toBeUndefined();
-        expect(port.name).toEqual(name);
+describe('Port', () => {
+    describe('constructor', () => {
+        test('Port can be instantiated', () => {
+            expect(southampton).toBeInstanceOf(Port);
+        });
+        test('Port instances have own "name" property', () => {
+            const { name } = southampton;
+            expect(southampton.name).toBe(name);
+        });
     });
 });
