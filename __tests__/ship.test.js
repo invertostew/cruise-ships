@@ -60,6 +60,15 @@ describe('Ship', () => {
         });
     });
     describe('setSail', () => {
+        test('Throws an error if the "itinerary.ports" is empty', () => {
+            const emptyConfig = {
+                itinerary: {
+                    ports: []
+                }
+            };
+            const titanic = new Ship(emptyConfig);
+            expect(() => titanic.setSail()).toThrowError('The ship has no itinerary.');
+        });
         test('State of "_currentPort" should be null', () => {
             titanic.setSail();
             expect(titanic._currentPort).toBeNull();

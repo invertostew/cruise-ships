@@ -1,5 +1,11 @@
 'use strict'
 
+const settings = {
+    errors: {
+        emptyItinerary: 'The ship has no itinerary.'
+    }
+}
+
 class Ship {
     constructor(config) {
         this.itinerary = config.itinerary;
@@ -8,6 +14,10 @@ class Ship {
     }
 
     setSail() {
+        if (!this.itinerary.ports.length) {
+            throw new Error(settings.errors.emptyItinerary);
+        }
+
         this._currentPort = null;
         const departedPort = this.itinerary.ports.shift();
         this._alreadyDocked.push(departedPort);
