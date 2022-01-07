@@ -2,15 +2,27 @@
 
 const settings = {
     errors: {
+        alreadyInitialized: 'No need to initialize again.',
         emptyItinerary: 'The ship has no itinerary.'
     }
 };
 
 class Ship {
     constructor(config) {
+        this._initialized = false;
         this.itinerary = config.itinerary;
         this._currentPort = config.itinerary.ports[0];
         this._alreadyDocked = [];
+        // this.init();
+    }
+
+    init() {
+        if (this._initialized) {
+            throw new Error(settings.errors.alreadyInitialized);
+        }
+
+        this._currentPort.addShip(this);
+        this._initialized = true;
     }
 
     setSail() {

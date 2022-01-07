@@ -7,26 +7,68 @@ beforeEach(() => {
     titanicConfig = {
         itinerary: {
             ports: [
-                { name: 'Southampton'},
-                { name: 'Cherbourg'},
-                { name: 'Queenstown'},
-                { name: 'New York City'}
+                {
+                    name: 'Southampton',
+                    _ships: []
+                },
+                {
+                    name: 'Cherbourg',
+                    _ships: []
+                },
+                {
+                    name: 'Queenstown',
+                    _ships: []
+                },
+                {
+                    name: 'New York City',
+                    _ships: []
+                }
             ]
         }
     };
     balticExplorerConfig = {
         itinerary: {
             ports: [
-                { name: 'Southampton'},
-                { name: 'Hamburg'},
-                { name: 'Copenhagen'},
-                { name: 'Visby'},
-                { name: 'Helsinki'},
-                { name: 'St Petersburg'},
-                { name: 'Tallinn'},
-                { name: 'Kiel'},
-                { name: 'Skagen'},
-                { name: 'Southampton'}
+                {
+                    name: 'Southampton',
+                    _ships: []
+                },
+                {
+                    name: 'Hamburg',
+                    _ships: []
+                },
+                {
+                    name: 'Copenhagen',
+                    _ships: []
+                },
+                {
+                    name: 'Visby',
+                    _ships: []
+                },
+                {
+                    name: 'Helsinki',
+                    _ships: []
+                },
+                {
+                    name: 'St Petersburg',
+                    _ships: []
+                },
+                {
+                    name: 'Tallinn',
+                    _ships: []
+                },
+                {
+                    name: 'Kiel',
+                    _ships: []
+                },
+                {
+                    name: 'Skagen',
+                    _ships: []
+                },
+                {
+                    name: 'Southampton',
+                    _ships: []
+                }
             ]
         }
     };
@@ -39,6 +81,10 @@ describe('Ship', () => {
         test('Ship can be instantiated', () => {
             expect(titanic).toBeInstanceOf(Ship);
             expect(balticExplorer).toBeInstanceOf(Ship);
+        });
+        test('Ship instances have own "_initialized" property', () => {
+            expect(titanic._initialized).toBeFalsy();
+            expect(balticExplorer._initialized).toBeFalsy();
         });
         test('Ship instances have own "itinerary" property', () => {
             const { itinerary: titanicItinerary } = titanic;
@@ -57,6 +103,22 @@ describe('Ship', () => {
         test('Ship instances have own "_alreadyDocked" property', () => {
             expect(titanic._alreadyDocked).toEqual([]);
             expect(balticExplorer._alreadyDocked).toEqual([]);
+        });
+    });
+    describe('init', () => {
+        test('Throws an error if "_initialized" is true', () => {
+            titanic._initialized = true;
+            expect(() => titanic.init()).toThrowError('No need to initialize again.');
+        });
+        test('init is called on Ship instantiation', () => {
+            // titanic._initialized = false;
+            // titanic.init = function () {
+            //     this._initialized = true;
+            // }
+            // titanic.itinerary.ports.forEach(port => {
+            //     port.addShip = jest.fn;
+            // });
+            // expect(titanic._currentPort.addShip()).toHaveBeenCalled();
         });
     });
     describe('setSail', () => {
@@ -78,9 +140,18 @@ describe('Ship', () => {
             titanic.setSail();
             expect(titanic.itinerary).toEqual({
                 ports: [
-                    { name: 'Cherbourg'},
-                    { name: 'Queenstown'},
-                    { name: 'New York City'}
+                    {
+                        name: 'Cherbourg',
+                        _ships: []
+                    },
+                    {
+                        name: 'Queenstown',
+                        _ships: []
+                    },
+                    {
+                        name: 'New York City',
+                        _ships: []
+                    }
                 ]
             });
         });
@@ -88,12 +159,21 @@ describe('Ship', () => {
             expect(titanic._alreadyDocked).toEqual([]);
             titanic.setSail();
             expect(titanic._alreadyDocked).toEqual([
-                { name: 'Southampton' }
+                {
+                    name: 'Southampton',
+                    _ships: []
+                }
             ]);
             titanic.setSail();
             expect(titanic._alreadyDocked).toEqual([
-                { name: 'Southampton' },
-                { name: 'Cherbourg' }
+                {
+                    name: 'Southampton',
+                    _ships: []
+                },
+                {
+                    name: 'Cherbourg',
+                    _ships: []
+                }
             ]);
         });
         test('Returns a success message', () => {
