@@ -106,6 +106,9 @@ describe('Ship', () => {
         test('State of "_currentPort" should NOT be null if "itinerary.ports" is NOT empty', () => {
             expect(titanic._currentPort).not.toBeNull();
         });
+        test('addShip should be called when instance is instantiatied', () => {
+            expect(titanic._currentPort.addShip).toBeCalledWith(titanic);
+        });
         test('State of "_isInitialized" should NOT be false if "itinerary.ports" is NOT empty', () => {
             expect(titanic._isInitialized).not.toBe(false);
         });
