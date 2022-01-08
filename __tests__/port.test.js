@@ -34,6 +34,7 @@ describe('Port', () => {
 
             southampton.addShip(ship1);
             expect(southampton._ships).toEqual([ship1]);
+            
             southampton.addShip(ship2);
             expect(southampton._ships).toEqual([ship1, ship2]);
         });

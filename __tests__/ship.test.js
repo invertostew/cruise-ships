@@ -171,31 +171,14 @@ describe('Ship', () => {
             expect(titanic._currentPort).toBeNull();
         });
 
-        // xtest('State of "_itinerary" should change', () => {
-        //     titanic._setSail();
-        //     expect(titanic._itinerary).toEqual({
-        //         ports: [
-        //             {
-        //                 name: 'Cherbourg',
-        //                 _ships: [],
-        //                 addShip: jest.fn(),
-        //                 removeShip: jest.fn()
-        //             },
-        //             {
-        //                 name: 'Queenstown',
-        //                 _ships: [],
-        //                 addShip: jest.fn(),
-        //                 removeShip: jest.fn()
-        //             },
-        //             {
-        //                 name: 'New York City',
-        //                 _ships: [],
-        //                 addShip: jest.fn(),
-        //                 removeShip: jest.fn()
-        //             }
-        //         ]
-        //     });
-        // });
+        // look at this again... serialization error when testing array value with toEqual (caused by jest.fn)
+        test('State of "_itinerary" should change, the array removes one element each time', () => {
+            expect(titanic._itinerary.ports.length).toBe(4);
+            titanic._setSail();
+            expect(titanic._itinerary.ports.length).toBe(3);
+            titanic._setSail();
+            expect(titanic._itinerary.ports.length).toBe(2);
+        });
 
         test('removeShip() should be invoked from within _setSail()', () => {
             titanic._setSail();
@@ -207,33 +190,14 @@ describe('Ship', () => {
             expect(balticDepartedPort.removeShip).toHaveBeenCalledWith(balticExplorer);
         });
 
-        // xtest('State of "_previouslyDockedPorts" should change', () => {
-        //     expect(titanic._previouslyDockedPorts).toEqual([]);
-        //     titanic._setSail();
-        //     expect(titanic._previouslyDockedPorts).toEqual([
-        //         {
-        //             name: 'Southampton',
-        //             _ships: [],
-        //             addShip: jest.fn(),
-        //             removeShip: jest.fn()
-        //         }
-        //     ]);
-        //     titanic._setSail();
-        //     expect(titanic._previouslyDockedPorts).toEqual([
-        //         {
-        //             name: 'Southampton',
-        //             _ships: [],
-        //             addShip: jest.fn(),
-        //             removeShip: jest.fn()
-        //         },
-        //         {
-        //             name: 'Cherbourg',
-        //             _ships: [],
-        //             addShip: jest.fn(),
-        //             removeShip: jest.fn()
-        //         }
-        //     ]);
-        // });
+        // look at this again... serialization error when testing array value with toEqual (caused by jest.fn)
+        test('State of "_previouslyDockedPorts" should change, the array adds one element each time', () => {
+            expect(titanic._previouslyDockedPorts.length).toBe(0);
+            titanic._setSail();
+            expect(titanic._previouslyDockedPorts.length).toBe(1);
+            titanic._setSail();
+            expect(titanic._previouslyDockedPorts.length).toBe(2);
+        });
 
         test('Returns a success message', () => {
             expect(titanic._setSail()).toEqual(
@@ -252,7 +216,7 @@ describe('Ship', () => {
         test('addShip() should be invoked from within _dock()', () => {
             titanic._dock();
             expect(titanic._currentPort.addShip).toHaveBeenCalledWith(titanic);
-            
+
             balticExplorer._dock();
             expect(balticExplorer._currentPort.addShip).toHaveBeenCalledWith(balticExplorer);
         });
