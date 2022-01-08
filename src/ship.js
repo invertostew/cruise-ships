@@ -9,20 +9,23 @@ const settings = {
 
 class Ship {
     constructor(config) {
-        this._initialized = false;
+        this._isInitialized = false;
         this.itinerary = config.itinerary;
-        this._currentPort = config.itinerary.ports[0];
+        this._currentPort = null;
         this._alreadyDocked = [];
-        // this.init();
+        this.init();
     }
 
     init() {
-        if (this._initialized) {
+        if (this._isInitialized) {
             throw new Error(settings.errors.alreadyInitialized);
         }
 
-        this._currentPort.addShip(this);
-        this._initialized = true;
+        if (this.itinerary.ports.length) {
+            this._currentPort = this.itinerary.ports[0];
+            this._currentPort.addShip(this);
+            this._isInitialized = true;
+        }
     }
 
     setSail() {
