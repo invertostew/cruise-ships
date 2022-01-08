@@ -201,7 +201,9 @@ describe('Ship', () => {
             ]);
         });
         test('Returns a success message', () => {
-            expect(titanic._setSail()).toEqual('The ship has set sail.');
+            expect(titanic._setSail()).toEqual(
+                `The ship has set sail! Next stop: ${titanic._itinerary.ports[0].name}.`
+            );
         });
     });
     describe('_dock', () => {
@@ -211,7 +213,9 @@ describe('Ship', () => {
             expect(titanic._currentPort).not.toBeNull();
         });
         test('Returns a success message', () => {
-            expect(titanic._dock()).toEqual(`The ship has docked at ${titanic._itinerary.ports[0].name}.`);
+            expect(titanic._dock()).toEqual(
+                `The ship has docked at ${titanic._itinerary.ports[0].name}.`
+            );
         });
     });
 });
