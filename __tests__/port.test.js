@@ -5,7 +5,7 @@ const Port = require('../src/port.js');
 let southamptonConfig, southampton;
 beforeEach(() => {
     southamptonConfig = {
-        name: 'Southampton',
+        name: jest.fn(),
         _ships: []
     };
     southampton = new Port(southamptonConfig);
@@ -17,12 +17,10 @@ describe('Port', () => {
             expect(southampton).toBeInstanceOf(Port);
         });
         test('Port instances have own "name" property', () => {
-            const { name } = southampton;
-
-            expect(southampton.name).toBe(name);
+            expect(southampton).toHaveProperty('name');
         });
         test('Port instances have own "_ships" property', () => {
-            expect(southampton._ships).toEqual([]);
+            expect(southampton).toHaveProperty('_ships');
         });
     });
     describe('addShip', () => {

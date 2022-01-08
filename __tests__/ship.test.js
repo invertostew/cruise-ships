@@ -5,7 +5,7 @@ const Ship = require('../src/ship.js');
 let titanicConfig, balticExplorerConfig, titanic, balticExplorer;
 beforeEach(() => {
     titanicConfig = {
-        itinerary: {
+        _itinerary: {
             ports: [
                 {
                     name: 'Southampton',
@@ -35,7 +35,7 @@ beforeEach(() => {
         }
     };
     balticExplorerConfig = {
-        itinerary: {
+        _itinerary: {
             ports: [
                 {
                     name: 'Helsinki',
@@ -78,17 +78,17 @@ describe('Ship', () => {
             expect(titanic).toHaveProperty('_isInitialized');
             expect(balticExplorer).toHaveProperty('_isInitialized');
         });
-        test('Ship instances have own "itinerary" property', () => {
-            expect(titanic).toHaveProperty('itinerary');
-            expect(balticExplorer).toHaveProperty('itinerary');
+        test('Ship instances have own "_itinerary" property', () => {
+            expect(titanic).toHaveProperty('_itinerary');
+            expect(balticExplorer).toHaveProperty('_itinerary');
         });
         test('Ship instances have own "_currentPort" property', () => {
             expect(titanic).toHaveProperty('_currentPort');
             expect(balticExplorer).toHaveProperty('_currentPort');
         });
-        test('Ship instances have own "_alreadyDocked" property', () => {
-            expect(titanic).toHaveProperty('_alreadyDocked');
-            expect(balticExplorer).toHaveProperty('_alreadyDocked');
+        test('Ship instances have own "_previouslyDockedPorts" property', () => {
+            expect(titanic).toHaveProperty('_previouslyDockedPorts');
+            expect(balticExplorer).toHaveProperty('_previouslyDockedPorts');
         });
         test('init is called on Ship instantiation', () => {
             // expect(titanic.init()).toHaveBeenCalled(); // come back to this later...
@@ -98,23 +98,25 @@ describe('Ship', () => {
     });
     describe('init', () => {
         test('Throws an error if "_isInitialized" is already true', () => {
+            const error = 'The ship has already been initialized.';
+
             titanic._isInitialized = true;
             expect(() => {
-                titanic.init();
-            }).toThrow(new Error('No need to initialize again.'));
+                titanic._init();
+            }).toThrowError(error);
         });
-        test('State of "_currentPort" should NOT be null if "itinerary.ports" is NOT empty', () => {
+        test('State of "_currentPort" should NOT be null if "_itinerary.ports" is NOT empty', () => {
             expect(titanic._currentPort).not.toBeNull();
         });
         test('addShip should be called when instance is instantiatied', () => {
             expect(titanic._currentPort.addShip).toBeCalledWith(titanic);
         });
-        test('State of "_isInitialized" should NOT be false if "itinerary.ports" is NOT empty', () => {
+        test('State of "_isInitialized" should NOT be false if "_itinerary.ports" is NOT empty', () => {
             expect(titanic._isInitialized).not.toBe(false);
         });
-        test('State of "_currentPort" should be null if "itinerary.ports" is empty', () => {
+        test('State of "_currentPort" should be null if "_itinerary.ports" is empty', () => {
             const emptyConfig = {
-                itinerary: {
+                _itinerary: {
                     ports: []
                 }
             };
@@ -122,9 +124,9 @@ describe('Ship', () => {
             
             expect(titanic._currentPort).toBeNull();
         });
-        test('State of "_isInitialized" should be false if "itinerary.ports" is empty', () => {
+        test('State of "_isInitialized" should be false if "_itinerary.ports" is empty', () => {
             const emptyConfig = {
-                itinerary: {
+                _itinerary: {
                     ports: []
                 }
             };
@@ -133,20 +135,22 @@ describe('Ship', () => {
             expect(titanic._isInitialized).toBe(false);
         });
     });
-    describe('setSail', () => {
-        test('Throws an error if "itinerary.ports" is empty', () => {
-            titanic.itinerary.ports = [];
+    describe('_setSail', () => {
+        test('Throws an error if "_itinerary.ports" is empty', () => {
+            const error = 'The ship has no itinerary.';
+
+            titanic._itinerary.ports = [];
             expect(() => {
-                titanic.setSail();
-            }).toThrow(new Error('The ship has no itinerary.'));
+                titanic._setSail();
+            }).toThrowError(error);
         });
         test('State of "_currentPort" should be null', () => {
-            titanic.setSail();
+            titanic._setSail();
             expect(titanic._currentPort).toBeNull();
         });
-        xtest('State of "itinerary" should change', () => {
-            titanic.setSail();
-            expect(titanic.itinerary).toEqual({
+        xtest('State of "_itinerary" should change', () => {
+            titanic._setSail();
+            expect(titanic._itinerary).toEqual({
                 ports: [
                     {
                         name: 'Cherbourg',
@@ -169,10 +173,10 @@ describe('Ship', () => {
                 ]
             });
         });
-        xtest('State of "_alreadyDocked" should change', () => {
-            expect(titanic._alreadyDocked).toEqual([]);
-            titanic.setSail();
-            expect(titanic._alreadyDocked).toEqual([
+        xtest('State of "_previouslyDockedPorts" should change', () => {
+            expect(titanic._previouslyDockedPorts).toEqual([]);
+            titanic._setSail();
+            expect(titanic._previouslyDockedPorts).toEqual([
                 {
                     name: 'Southampton',
                     _ships: [],
@@ -180,8 +184,8 @@ describe('Ship', () => {
                     removeShip: jest.fn()
                 }
             ]);
-            titanic.setSail();
-            expect(titanic._alreadyDocked).toEqual([
+            titanic._setSail();
+            expect(titanic._previouslyDockedPorts).toEqual([
                 {
                     name: 'Southampton',
                     _ships: [],
@@ -197,17 +201,17 @@ describe('Ship', () => {
             ]);
         });
         test('Returns a success message', () => {
-            expect(titanic.setSail()).toEqual('The ship has set sail.');
+            expect(titanic._setSail()).toEqual('The ship has set sail.');
         });
     });
-    describe('dock', () => {
+    describe('_dock', () => {
         test('State of "_currentPort" should NOT be null', () => {
             titanic._currentPort = null;
-            titanic.dock();
+            titanic._dock();
             expect(titanic._currentPort).not.toBeNull();
         });
         test('Returns a success message', () => {
-            expect(titanic.dock()).toEqual(`The ship has docked at ${titanic.itinerary.ports[0].name}.`);
+            expect(titanic._dock()).toEqual(`The ship has docked at ${titanic._itinerary.ports[0].name}.`);
         });
     });
 });

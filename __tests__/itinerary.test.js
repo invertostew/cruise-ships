@@ -6,9 +6,9 @@ let itineraryConfig, itinerary;
 beforeEach(() => {
     itineraryConfig = {
         ports: [
-            { name: 'Cherbourg' },
-            { name: 'Cobh' },
-            { name: 'New York City' }
+            {
+                name: jest.fn()
+            }
         ]
     };
     itinerary = new Itinerary(itineraryConfig);
@@ -20,8 +20,7 @@ describe('Itinerary', () => {
             expect(itinerary).toBeInstanceOf(Itinerary);
         });
         test('Itinerary instances have own "ports" property', () => {
-            const { ports } = itinerary;
-            expect(itinerary.ports).toEqual(ports);
+            expect(itinerary).toHaveProperty('ports');
         });
     });
 });
