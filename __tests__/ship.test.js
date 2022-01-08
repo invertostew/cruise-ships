@@ -173,6 +173,15 @@ describe('Ship', () => {
                 ]
             });
         });
+        test('removeShip should be invoked by _setSail', () => {
+            titanic._setSail();
+            const titanicDepartedPort = titanic._previouslyDockedPorts[0];
+            expect(titanicDepartedPort.removeShip).toHaveBeenCalledWith(titanic);
+
+            balticExplorer._setSail();
+            const balticDepartedPort = balticExplorer._previouslyDockedPorts[0];
+            expect(balticDepartedPort.removeShip).toHaveBeenCalledWith(balticExplorer);
+        });
         xtest('State of "_previouslyDockedPorts" should change', () => {
             expect(titanic._previouslyDockedPorts).toEqual([]);
             titanic._setSail();
@@ -211,6 +220,12 @@ describe('Ship', () => {
             titanic._currentPort = null;
             titanic._dock();
             expect(titanic._currentPort).not.toBeNull();
+        });
+        test('addShip should be invoked by _dock', () => {
+            titanic._dock();
+            expect(titanic._currentPort.addShip).toHaveBeenCalledWith(titanic);
+            balticExplorer._dock();
+            expect(balticExplorer._currentPort.addShip).toHaveBeenCalledWith(balticExplorer);
         });
         test('Returns a success message', () => {
             expect(titanic._dock()).toEqual(

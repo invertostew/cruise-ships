@@ -38,8 +38,9 @@ class Ship {
         }
 
         this._currentPort = null;
-
+        
         const departedPort = this._itinerary.ports.shift();
+        departedPort.removeShip(this);
         this._previouslyDockedPorts.push(departedPort);
 
         const [nextPort] = this._itinerary.ports;
@@ -51,6 +52,7 @@ class Ship {
         const [currentPort] = this._itinerary.ports;
         
         this._currentPort = currentPort;
+        this._currentPort.addShip(this);
 
         return `The ship has docked at ${this._currentPort.name}.`;
     }
