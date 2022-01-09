@@ -57,5 +57,7 @@ All tests are located inside of the `__tests__` directory.
 
 If you wish to run the tests for yourself, you can install Jest by running `npm install` and from there you can run the tests by running `npm test`.
 
+![Passing Tests!](./__tests__/test-screenshots/cruise-ship-test-coverage.png)
+
 ## Future Plans
 * Add a GUI to the application.
