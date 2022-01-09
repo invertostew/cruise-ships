@@ -165,6 +165,26 @@ describe('Ship', () => {
             }).toThrowError(error);
         });
 
+        test('Throws an error if "_currentPort" is null', () => {
+            const error = 'The ship has already set sail.';
+
+            titanic._currentPort = null;
+            expect(() => {
+                titanic._setSail();
+            }).toThrowError(error);
+        });
+
+        test('Throws an error if "_itinerary.ports" has one item, and "_previouslyDockedPorts" is not empty', () => {
+            const error = 'The ship has already set sail.';
+
+            titanic._itinerary.ports = [];
+            titanic._itinerary.ports.push(jest.fn());
+            titanic._previouslyDockedPorts.push(jest.fn());
+            expect(() => {
+                titanic._setSail();
+            }).toThrowError(error);
+        });
+
         test('State of "_currentPort" should be set to null', () => {
             expect(titanic._currentPort).not.toBeNull();
             titanic._setSail();
@@ -176,8 +196,6 @@ describe('Ship', () => {
             expect(titanic._itinerary.ports.length).toBe(4);
             titanic._setSail();
             expect(titanic._itinerary.ports.length).toBe(3);
-            titanic._setSail();
-            expect(titanic._itinerary.ports.length).toBe(2);
         });
 
         test('removeShip() should be invoked from within _setSail()', () => {
@@ -195,8 +213,6 @@ describe('Ship', () => {
             expect(titanic._previouslyDockedPorts.length).toBe(0);
             titanic._setSail();
             expect(titanic._previouslyDockedPorts.length).toBe(1);
-            titanic._setSail();
-            expect(titanic._previouslyDockedPorts.length).toBe(2);
         });
 
         test('Returns a success message', () => {

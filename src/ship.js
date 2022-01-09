@@ -7,7 +7,9 @@ const settings = {
     },
     errors: {
         alreadyInitialized: 'The ship has already been initialized.',
-        emptyItinerary: 'The ship has no itinerary.'
+        emptyItinerary: 'The ship has no itinerary.',
+        alreadySailing: 'The ship has already set sail.',
+        hasNotPreviouslyDocked: 'You must set sail before you can dock.'
     }
 };
 
@@ -33,8 +35,17 @@ class Ship {
     }
 
     _setSail() {
-        if (!this._itinerary.ports.length) {
+        const emptyItinerary = !this._itinerary.ports.length;
+        const hasPreviouslyDocked = this._previouslyDockedPorts.length > 0;
+        const finalDestination = this._itinerary.ports.length === 1;
+        const alreadySailing = !this._currentPort || hasPreviouslyDocked && finalDestination;
+
+        if (emptyItinerary) {
             throw new Error(settings.errors.emptyItinerary);
+        }
+
+        if (alreadySailing) {
+            throw new Error(settings.errors.alreadySailing);
         }
 
         this._currentPort = null;
@@ -49,6 +60,12 @@ class Ship {
     }
 
     _dock() {
+        const hasNotPreviouslyDocked = !this._previouslyDockedPorts.length;
+
+        if (hasNotPreviouslyDocked) {
+            throw new Error(settings.errors.hasNotPreviouslyDocked);
+        }
+
         const [currentPort] = this._itinerary.ports;
         
         this._currentPort = currentPort;
