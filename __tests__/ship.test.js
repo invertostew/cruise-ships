@@ -223,8 +223,21 @@ describe('Ship', () => {
     });
 
     describe('_dock', () => {
+        beforeEach(() => {
+            titanic._previouslyDockedPorts = [jest.fn()];
+            balticExplorer._previouslyDockedPorts = [jest.fn()];
+        });
+
+        test('Throws an error if "_previouslyDockedPorts" is empty', () => {
+            const error = 'You must set sail before you can dock.';
+
+            titanic._previouslyDockedPorts = [];
+            expect(() => {
+                titanic._dock();
+            }).toThrowError(error);
+        });
+
         test('State of "_currentPort" should NOT be null once docked', () => {
-            titanic._currentPort = null;
             titanic._dock();
             expect(titanic._currentPort).not.toBeNull();
         });
