@@ -3,6 +3,8 @@
 const Ship = require('../src/ship.js');
 
 describe('Ship', () => {
+    const initFn = Ship.prototype._init;
+
     describe('constructor', () => {
         let balticExplorerConfig;
         let balticExplorer;
@@ -17,6 +19,11 @@ describe('Ship', () => {
                 }
             };
             balticExplorer = new Ship(balticExplorerConfig);
+        });
+
+        afterEach(() => {
+            balticExplorer = null;
+            Ship.prototype._init = initFn;
         });
 
         test('Ship can be instantiated', () => {
@@ -39,7 +46,7 @@ describe('Ship', () => {
             expect(balticExplorer).toHaveProperty('_previouslyDockedPorts');
         });
 
-        xtest('_init is called on Ship instantiation', () => {
+        test('_init is called on Ship instantiation', () => {
             Ship.prototype._init = jest.fn();
             const balticExplorer = new Ship(balticExplorerConfig);
 
@@ -69,6 +76,10 @@ describe('Ship', () => {
             balticExplorer._isInitialized = false;
             balticExplorer._currentPort = null;
             balticExplorer._init();
+        });
+
+        afterEach(() => {
+            balticExplorer = null;
         });
 
         test('Throws an error if "_isInitialized" is already true', () => {
@@ -137,6 +148,10 @@ describe('Ship', () => {
                 }
             };
             balticExplorer = new Ship(balticExplorerConfig);
+        });
+
+        afterEach(() => {
+            balticExplorer = null;
         });
 
         test('Throws an error if "_itinerary.ports" is empty', () => {
@@ -232,6 +247,10 @@ describe('Ship', () => {
                 the error will always throw.
             */
             balticExplorer._previouslyDockedPorts = [jest.fn()];
+        });
+
+        afterEach(() => {
+            balticExplorer = null;
         });
 
         test('Throws an error if "_previouslyDockedPorts" is empty', () => {
