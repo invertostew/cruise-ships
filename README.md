@@ -5,7 +5,8 @@ This is my cruise ship project for [Manchester Codes](https://www.manchestercode
 The main purpose of this project is to practice OOP (Object-oriented Programming) as well as how to emulate dependencies in tests using mocks.
 
 ## Features
-Coming soon.
+* Create cruise ships, and cruise ship itineraries that hold ports.
+* Allow the cruise ship to travel to each of the ports in the itinerary, starting from the first port.
 
 ## Requirements
 * [Node JS](https://nodejs.org/en/) - to run the program in the command line.
