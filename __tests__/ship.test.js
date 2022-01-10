@@ -243,17 +243,29 @@ describe('Ship', () => {
             }).toThrowError(error);
         });
 
+        test('Throws an error if "_currentPort" is truthy', () => {
+            const error = 'The ship is already docked.';
+
+            balticExplorer._currentPort = jest.fn();
+            expect(() => {
+                balticExplorer._dock();
+            }).toThrowError(error);
+        });
+
         test('State of "_currentPort" should NOT be null once docked', () => {
+            balticExplorer._currentPort = null;
             balticExplorer._dock();
             expect(balticExplorer._currentPort).not.toBeNull();
         });
 
         test('addShip should be called when _dock is invoked', () => {
+            balticExplorer._currentPort = null;
             balticExplorer._dock();
             expect(balticExplorer._currentPort.addShip).toHaveBeenCalledWith(balticExplorer);
         });
 
         test('Returns a success message', () => {
+            balticExplorer._currentPort = null;
             expect(balticExplorer._dock()).toEqual(
                 `The ship has docked at ${balticExplorer._itinerary.ports[0].name}.`
             );

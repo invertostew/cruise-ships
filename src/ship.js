@@ -9,14 +9,15 @@ const settings = {
         alreadyInitialized: 'The ship has already been initialized.',
         emptyItinerary: 'The ship has no itinerary.',
         alreadySailing: 'The ship has already set sail.',
-        hasNotPreviouslyDocked: 'You must set sail before you can dock.'
+        hasNotPreviouslyDocked: 'You must set sail before you can dock.',
+        alreadyDocked: 'The ship is already docked.'
     }
 };
 
 class Ship {
-    constructor(config) {
+    constructor({ _itinerary }) {
         this._isInitialized = settings.defaults._isInitialized;
-        this._itinerary = config._itinerary;
+        this._itinerary = _itinerary;
         this._currentPort = settings.defaults._currentPort;
         this._previouslyDockedPorts = [];
         this._init();
@@ -61,9 +62,14 @@ class Ship {
 
     _dock() {
         const hasNotPreviouslyDocked = !this._previouslyDockedPorts.length;
+        const alreadyDocked = this._currentPort;
 
         if (hasNotPreviouslyDocked) {
             throw new Error(settings.errors.hasNotPreviouslyDocked);
+        }
+
+        if (alreadyDocked) {
+            throw new Error(settings.errors.alreadyDocked);
         }
 
         const [currentPort] = this._itinerary.ports;

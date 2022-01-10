@@ -1,8 +1,8 @@
 'use strict'
 
 class Port {
-    constructor(config) {
-        this.name = config.name;
+    constructor({ name }) {
+        this.name = name;
         this._ships = [];
     }
 

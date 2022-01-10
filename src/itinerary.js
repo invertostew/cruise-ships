@@ -1,8 +1,8 @@
 'use strict'
 
 class Itinerary {
-    constructor(config) {
-        this.ports = config.ports;
+    constructor({ ports }) {
+        this.ports = ports;
     }
 }
 
