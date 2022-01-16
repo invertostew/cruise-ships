@@ -158,6 +158,7 @@ describe('Ship', () => {
             const error = 'The ship has no itinerary.';
 
             balticExplorer._itinerary.ports = [];
+
             expect(() => {
                 balticExplorer._setSail();
             }).toThrowError(error);
@@ -167,6 +168,7 @@ describe('Ship', () => {
             const error = 'The ship has already set sail.';
 
             balticExplorer._currentPort = null;
+
             expect(() => {
                 balticExplorer._setSail();
             }).toThrowError(error);
@@ -176,37 +178,35 @@ describe('Ship', () => {
             const error = 'The ship has already set sail.';
 
             balticExplorer._itinerary.ports = [jest.fn()];
-            balticExplorer._previouslyDockedPorts.push(jest.fn());
+            balticExplorer._previouslyDockedPorts = [jest.fn()];
+
             expect(() => {
                 balticExplorer._setSail();
             }).toThrowError(error);
         });
 
         test('State of "_currentPort" should be set to null', () => {
-            expect(balticExplorer._currentPort).not.toBeNull();
             balticExplorer._setSail();
+
             expect(balticExplorer._currentPort).toBeNull();
         });
 
         test('Remove one port from "_itinerary.ports"', () => {
-            expect(balticExplorer._itinerary.ports.length).toBe(2);
-            expect(balticExplorer._itinerary.ports[0].name).toBe('Helsinki');
-            expect(balticExplorer._itinerary.ports[1].name).toBe('St Petersburg');
             balticExplorer._setSail();
+
             expect(balticExplorer._itinerary.ports.length).toBe(1);
             expect(balticExplorer._itinerary.ports[0].name).toBe('St Petersburg');
         });
 
         test('removeShip should be called when _setSail is invoked', () => {
             balticExplorer._setSail();
-            const [departedPort] = balticExplorer._previouslyDockedPorts;
-            expect(departedPort.removeShip).toHaveBeenCalledWith(balticExplorer);
+
+            expect(balticExplorer._previouslyDockedPorts[0].removeShip).toHaveBeenCalledWith(balticExplorer);
         });
 
         test('Add the removed port from "_itinerary.ports" to "_previouslyDockedPorts"', () => {
-            expect(balticExplorer._previouslyDockedPorts.length).toBe(0);
-            expect(balticExplorer._previouslyDockedPorts).toEqual([]);
             balticExplorer._setSail();
+
             expect(balticExplorer._previouslyDockedPorts.length).toBe(1);
             expect(balticExplorer._previouslyDockedPorts[0].name).toEqual('Helsinki');
         });
@@ -257,6 +257,7 @@ describe('Ship', () => {
             const error = 'You must set sail before you can dock.';
 
             balticExplorer._previouslyDockedPorts = [];
+
             expect(() => {
                 balticExplorer._dock();
             }).toThrowError(error);
@@ -266,6 +267,7 @@ describe('Ship', () => {
             const error = 'The ship is already docked.';
 
             balticExplorer._currentPort = jest.fn();
+
             expect(() => {
                 balticExplorer._dock();
             }).toThrowError(error);
@@ -274,17 +276,20 @@ describe('Ship', () => {
         test('State of "_currentPort" should NOT be null once docked', () => {
             balticExplorer._currentPort = null;
             balticExplorer._dock();
+
             expect(balticExplorer._currentPort).not.toBeNull();
         });
 
         test('addShip should be called when _dock is invoked', () => {
             balticExplorer._currentPort = null;
             balticExplorer._dock();
+
             expect(balticExplorer._currentPort.addShip).toHaveBeenCalledWith(balticExplorer);
         });
 
         test('Returns a success message', () => {
             balticExplorer._currentPort = null;
+            
             expect(balticExplorer._dock()).toEqual(
                 `The ship has docked at ${balticExplorer._itinerary.ports[0].name}.`
             );
