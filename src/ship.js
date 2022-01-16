@@ -36,45 +36,38 @@ class Ship {
     }
 
     _setSail() {
-        const emptyItinerary = !this._itinerary.ports.length;
-        const hasPreviouslyDocked = this._previouslyDockedPorts.length > 0;
-        const finalDestination = this._itinerary.ports.length === 1;
-        const alreadySailing = !this._currentPort || hasPreviouslyDocked && finalDestination;
-
-        if (emptyItinerary) {
+        if (!this._itinerary.ports.length) {
             throw new Error(settings.errors.emptyItinerary);
         }
 
-        if (alreadySailing) {
+        if (
+            !this._currentPort
+            || this._previouslyDockedPorts.length > 0 && this._itinerary.ports.length === 1) {
             throw new Error(settings.errors.alreadySailing);
         }
 
         this._currentPort = null;
-        
+
         const departedPort = this._itinerary.ports.shift();
+
         departedPort.removeShip(this);
+
         this._previouslyDockedPorts.push(departedPort);
 
-        const [nextPort] = this._itinerary.ports;
-
-        return `The ship has set sail! Next stop: ${nextPort.name}.`;
+        return `The ship has set sail! Next stop: ${this._itinerary.ports[0].name}.`;
     }
 
     _dock() {
-        const hasNotPreviouslyDocked = !this._previouslyDockedPorts.length;
-        const alreadyDocked = this._currentPort;
-
-        if (hasNotPreviouslyDocked) {
+        if (!this._previouslyDockedPorts.length) {
             throw new Error(settings.errors.hasNotPreviouslyDocked);
         }
 
-        if (alreadyDocked) {
+        if (this._currentPort) {
             throw new Error(settings.errors.alreadyDocked);
         }
-
-        const [currentPort] = this._itinerary.ports;
         
-        this._currentPort = currentPort;
+        this._currentPort = this._itinerary.ports[0];
+
         this._currentPort.addShip(this);
 
         return `The ship has docked at ${this._currentPort.name}.`;

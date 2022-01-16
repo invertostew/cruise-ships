@@ -11,7 +11,7 @@ class Port {
     }
 
     removeShip(ship) {
-        const removedShip = this._ships.findIndex((el) => {
+        const removedShip = this._ships.findIndex(el => {
             return el === ship;
         });
         this._ships.splice(removedShip, 1);
