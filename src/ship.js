@@ -1,5 +1,3 @@
-'use strict'
-
 (function exportShip() {
     const settings = {
         defaults: {

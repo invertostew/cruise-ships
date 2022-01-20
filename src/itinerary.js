@@ -1,5 +1,3 @@
-'use strict'
-
 (function exportItinerary() {
     class Itinerary {
         constructor({ ports }) {

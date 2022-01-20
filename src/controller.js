@@ -16,6 +16,22 @@
                 backgroundIndex += 1;
             }, 1000);
         }
+
+        renderPorts(ports) {
+            const portsEl = document.querySelector('#ports');
+            portsEl.style.width = '0px';
+
+            ports.forEach((port, index) => {
+                const newPortEl = document.createElement('div');
+                newPortEl.className = 'port';
+                newPortEl.dataset.portName = port.name;
+                newPortEl.dataset.portIndex = index;
+                const portsElWidth = parseInt(portsEl.style.width, 10);
+                portsEl.style.width = `${portsElWidth + 256}px`;
+
+                portsEl.appendChild(newPortEl);
+            });
+        }
     }
 
     if (typeof module !== 'undefined' && module.exports) {

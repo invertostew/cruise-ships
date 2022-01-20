@@ -1,5 +1,3 @@
-'use strict'
-
 (function exportPort() {
     class Port {
         constructor({ name }) {
