@@ -1,19 +1,16 @@
 (function exportPort() {
     class Port {
-        constructor({ name }) {
+        constructor(name) {
             this.name = name;
-            this._ships = [];
+            this.ships = [];
         }
 
         addShip(ship) {
-            this._ships.push(ship);
+            this.ships.push(ship);
         }
 
         removeShip(ship) {
-            const removedShip = this._ships.findIndex((el) => {
-                return el === ship;
-            });
-            this._ships.splice(removedShip, 1);
+            this.ships = this.ships.filter(dockedShip => dockedShip !== ship);
         }
     }
 
