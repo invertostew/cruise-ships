@@ -11,23 +11,30 @@
 <body>
     <main id="viewport">
         <div id="ports"></div>
+        <div id="ship"></div>
     </main>
 
     <script src="./src/controller.js"></script>
     <script src="./src/port.js"></script>
     <script src="./src/itinerary.js"></script>
+    <script src="./src/ship.js"></script>
     <script>
         const controller = new Controller();
-        const itinerary = new Itinerary({
-            ports: [
-                new Port({ name: 'New York City' }),
-                new Port({ name: 'Grand Turk' }),
-                new Port({ name: 'San Juan' }),
-                new Port({ name: 'Amber Cove' })
-            ]
-        });
+        const shipConfig = {
+            _itinerary: new Itinerary({
+                ports: [
+                    new Port({ name: 'New York City' }),
+                    new Port({ name: 'Grand Turk' }),
+                    new Port({ name: 'San Juan' }),
+                    new Port({ name: 'Amber Cove' })
+                ]
+            })
+        };
 
-        controller.renderPorts(itinerary.ports);
+        const ship = new Ship(shipConfig);
+
+        controller.renderPorts(ship._itinerary.ports);
+        controller.renderShip(ship);
     </script>
 </body>
 </html>
